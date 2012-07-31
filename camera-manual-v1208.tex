@@ -1,0 +1,112 @@
+% UFO camera manual
+% A. Kopmann
+%
+
+\documentclass[12pt,a4paper,twoside]{book}
+
+\parindent0mm
+\parskip2ex plus1ex minus0.5ex
+
+
+\usepackage{a4wide}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{listings}
+\usepackage[usenames]{color}
+\definecolor{comment}{rgb}{1,0,0}
+
+\lstset{
+   basicstyle=\scriptsize\ttfamily,
+   keywordstyle=\bfseries\ttfamily\color{orange},
+   stringstyle=\color{green}\ttfamily,
+   commentstyle=\color{middlegray}\ttfamily,
+   emph={square}, 
+   emphstyle=\color{blue}\texttt,
+   emph={[2]root,base},
+   emphstyle={[2]\color{yac}\texttt},
+   showstringspaces=false,
+   flexiblecolumns=false,
+   tabsize=8,
+   %numbers=left,
+   numberstyle=\tiny,
+   numberblanklines=false,
+   stepnumber=1,
+   numbersep=10pt,
+   xleftmargin=15pt
+ }
+
+
+\begin{document}
+
+\begin{titlepage}
+\includegraphics[width=4cm]{images/kit_logo.png}
+
+
+\hspace{4cm}
+\begin{minipage}{12cm}
+\vspace{3cm}
+{\LARGE\bf User manual}
+
+\vspace{0.2cm}
+08/2012
+
+\vspace{2.5cm}
+{\LARGE UFO fully programmable\\[0.7ex]
+ high-throughput camera}
+
+\end{minipage}
+
+\vfill
+\hspace{4cm}
+\begin{minipage}{12cm}
+\begin{description}
+\item[\textnormal{Authors:}] U Stephanovic, M Caselle, M Vogelgesang, S Chilingaryan, A. Kopmann
+\item[\textnormal{Project:}] UFO 
+\item[\textnormal{Revision:}] 31.7.2012 
+\end{description}
+
+\vspace{3cm}
+KIT -- University of the State of Baden-Württemberg and\\
+National Research Center of the Helmholtz Association
+\end{minipage}
+\end{titlepage}
+
+\tableofcontents
+
+
+\chapter*{Introduction}
+
+
+The manual introduces a new concept of a flexible camera platform for science. The camera platform is able
+to include nearly all available image sensor. It comprises an readout module with FPGA and memory and 
+possesses an high-throughput interface to the camera PC. Linux drivers and applications are available.
+
+The manual splits in three parts basically user manual, administration manual and developers manual.
+
+Part 1: Overview of the system architecture, operation of the camera. 
+
+Part 2: Installation of the camera drivers and the software tools. Update of the camera firmware.
+Description of the camera characterization.
+
+Part 3: Overview of the firmware, drivers and software architecture, management of the source code,
+Programming interfaces, instructions for analyzing and tracking bug. 
+
+The appendix gives data sheets on the camera characteristics.
+
+The document refers to firmware version UFO5/12bit, pcitools-0.0.1, libuca-0.6.0.
+
+
+
+\include{user}
+\include{admin}
+\include{devel}
+\include{appendix}
+
+
+\bibliography{ufo}{}
+\bibliographystyle{plain}
+
+\end{document}
+
+

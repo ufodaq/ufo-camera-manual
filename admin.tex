@@ -1,0 +1,86 @@
+% UFO camera admin manual
+%
+
+\chapter{Administration manual}
+
+The UFO camera consists of: 
+\begin{itemize}
+\item Image sensor module
+\item Camera controller board, including power supply, passive PCI backplane
+\item PCI Express extender with client and host modules
+\item Pci-tool package
+\item Camera decoding package
+\item High-speed storage library
+\item Universal camera access library
+\end{itemize}
+
+\section{Prerequisites, Requirements}
+
+Interface for lenses is C-mount.
+
+Software packages
+
+
+\section{Connecting the hardware, Power, Computer interface}
+
+% TODO Describe the hardware setup
+
+
+\section{Installation of the camera drivers and tools}
+
+The software needs to be installed in the order libufodecode, fastwriter, pcitool and libuca. The major dependencies are:
+\begin{itemize}
+\item GNU C compiler with glibc and other mayor system libraries
+\item The Linux kernel development files
+\item XFS development files
+\item glib2 library
+\end{itemize}
+    
+
+\subsection{Camera format decoder -- libufdecode}
+\begin{verbatim}
+cmake .
+make 
+make install
+\end{verbatim}
+
+
+In case of problems it is possible to disable SSE support, in this case cmake should be run with \verb/HAVE_SSE=OFF/ parameter
+\begin{verbatim}
+cmake -D "HAVE_SSE=OFF" .
+\end{verbatim}
+
+
+\subsection{Camera format decoder -- libufdecode}
+\begin{verbatim}
+cmake .
+make 
+make install
+\end{verbatim}
+
+
+\subsection{Camera driver -- pcitool}
+The building of pcitool consists of 3 steps. The pcitool userspace may be simply installed with cmake as other applications.
+\begin{verbatim}
+cmake .
+make
+make install
+\end{verbatim}
+
+To build kernel, module:
+Change to the folder \verb/driver/ and adjust  \verb/PCIE_IPECAMERA_DEVICE_ID/ in the file pciDriver.h if required (you may check actual device id with the tool lspci).
+\begin{verbatim}
+make
+make install
+depmod -a
+modprobe pciDriver
+\end{verbatim}
+To autoload driver, copy \verb|misc/50-pcidriver.rules| into the \verb|/etc/udev/rules.d| directory
+
+
+
+\subsection{Universal camera layer -- libuca}
+
+
+
+
