@@ -157,10 +157,10 @@ The camera comes with a graphical application that displays live images from the
 The bottom tab provides some short cuts for often used camera functions. 
 The full set of camera properties are accessible in the right part of the application. 
 
-The graphical user inferface is shown in \figurename~\ref{camera-gui}.  The main screen display the image data from the camera. The control buttons above the main window allow an video recorder like recording and replay of the selected scenes.
+The graphical user interface is shown in \figurename~\ref{camera-gui}. The main screen display the image data from the camera. The control buttons above the main window allow an video recorder like recording and replay of the selected scenes.
 The bottom part provides some shortcuts for often used camera parameters.  The full set of camera properties are accessible in the right part of the application. With the double click on the parameter name the value can be changed. All sensor registers are accessible as well. 
 
-\begin{figure}[h]
+\begin{figure}[h] 
 \includegraphics[width=\textwidth]{images/ufo_gui2.png}
 \caption{\label{camera-gui} Camera frontend}
 \end{figure}
@@ -509,7 +509,7 @@ pci -w cmosis_exp_time 0x25
 For often used operations pcitool contains scripts.
 The scripts are self-explanatory. More information, if needed, can be found inside the scripts itself.
 
-\begin{tabular}{|c|p{10cm}|}
+\begin{tabular}{|l|p{10cm}|}
 \hline
 Script						& Description \\
 \hline
@@ -518,11 +518,12 @@ Script						& Description \\
 \verb/Reset_10_bits.sh/ 	& Reset sequence for setup with the 10bit/pixel. \\
 \hline
 
-\verb/Reset\_11\_bits.sh/ 	& Reset sequence for setup with the 11bit/pixel. \\
+\verb/Reset_11_bits.sh/ 	& Reset sequence for setup with the 11bit/pixel. \\
 \hline
-\verb/Reset\_12\_bits.sh/ 	& Reset sequence for setup with the 12bit/pixel. \\
+\verb/Reset_12_bits.sh/ 	& Reset sequence for setup with the 12bit/pixel. \\
 \hline
 \verb/frame.sh/ 			& For requesting frames. Number of frames and exposure time is settable by user. \\
+\hline
 \verb/stimuli.sh/			& \\
 \hline
 \end{tabular}
@@ -531,7 +532,6 @@ Script						& Description \\
 
 
 %\subsection{Performing calibration of the image sensor}
-
 % TODO: Add description of scripts used to calibrate the sensor
 
 

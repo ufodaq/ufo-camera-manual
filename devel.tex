@@ -51,6 +51,134 @@ Sensor features and characteristics:
 
 Please look at the CMV2000 datasheet for more information regarding the sensor, and additional CMOSIS white papers regarding recommended register settings \cite{CMOSIS:CMV2000}. Also, in section \ref{camera_char} is given the overview of the sensor characterization for several different parameters.
 
+
+
+\subsection{Data format}
+
+The UFO camera uses a special data format to be able to send images and trigger 
+information in a compact form. The format needs also to ensure data integrity. 
+In case of transmission errors the information can partly be recovered. 
+
+The data is send frame by frame.
+Each frame consist of the HEADER, DATA PAYLOAD and TAIL.
+
+
+\subsubsection{Header}
+
+HEADER contains 8 word of information:
+
+\begin{verbatim}
+DHEADER_1 DHEADER_2 DHEADER_3 DHEADER_4
+DHEADER_5 DHEADER_6 DHEADER_7 DHEADER_8
+
+\end{verbatim}
+Each DHEADER word has 32 bits.
+\begin{verbatim}
+DHEADER_1 = {4'h5, 28'h1111111};
+DHEADER_2 = {4'h5, 28'h2222222};
+DHEADER_3 = {4'h5, 28'h3333333};
+DHEADER_4 = {4'h5, 28'h4444444};
+DHEADER_5 = {4'h5, 28'h5555555};
+DHEADER_6 = {4'h5, CMOSIS_start_addr[9:0], skip_lines[6:0], number_of_lines};
+DHEADER_7 = {4'h5, 4'h5, frame_number};
+DHEADER_8 = {4'h5, ADC_Resolution, Output_mode, FR_timestap};
+\end{verbatim}
+
+The values for \verb/ADC_resolution/ are given in the following table.
+
+\begin{tabular}{|c|c|}
+\hline
+ADC resolution				& Value 	\\	
+\hline
+10-bit				& 0 \\
+\hline
+11-bit				& 1 \\
+\hline
+12-bit				& 2 \\
+\hline
+\end{tabular}
+
+The parameter \verb/Output_resolution/ is given in the following table
+
+\begin{tabular}{|c|c|}
+\hline
+ADC resolution			& Value 	\\	
+\hline
+16 outputs				& 0 \\
+\hline
+8 outputs-not used		& 1 \\
+\hline
+4 outputs				& 2 \\
+\hline
+2 outputs-not used		& 3 \\
+
+\hline
+\end{tabular}
+
+
+\subsubsection{Tail}
+
+The TAIL contains again 8 words.
+
+\begin{verbatim}
+TAIL_1 TAIL_2 TAIL_3 TAIL_4
+TAIL_5 TAIL_6 TAIL_7 TAIL_8
+\end{verbatim}
+
+All TAIL fields are 32 bits wide. In total the tail has a length of 256 bits.
+\begin{verbatim}
+TAIL_1 = {4'h0, 28'hAAAAAAA};
+TAIL_2 = {Status1};
+TAIL_3 = {Status2};
+TAIL_4 = {Status3};
+TAIL_5 = {4'h0, 2'h0, app_addr_rd};
+TAIL_6 = {4'h0, 2'h0, app_addr_wr};
+TAIL_7 = {4'h0, 28'h0000000};
+TAIL_8 = {4'h0, 28'h1111111};
+\end{verbatim}
+
+
+\subsubsection{Data}
+
+Data payload is organized in blocks of 256 bits. One block contains the information of 16 pixel. Each block starts with a 32bit wide data block header. Depending on the mode of operation 16 x 10, 16 x 11 or 16 x 12bit of data are contained in the block. The rest of the data block is filled with zeros. At maximum ADC data with up to 14bit per pixel can be coded by this scheme.  
+
+For 10bit data per pixel:
+\[
+\underbrace{Header}_{32bit} \; \; \underbrace{00000000}_{32bit} \;  \;\underbrace{00000000 }_{32bit} \; \; \underbrace{Pix\;ch0 \;  \; \ldots  \;  \;Pix\;ch15}_{160 \; bits}
+\]
+
+For the 12bit data per pixel:
+\[
+\underbrace{Header}_{32bit} \; \; \underbrace{00000000}_{32bit} \;  \; \underbrace{Pix\;ch0 \;  \; \ldots  \;  \;Pix\;ch15}_{192 \; bits}
+\]
+
+
+The data block header gives information on the position of the pixel in the images. 
+The whole image is organized in 16 columns, each served by one channel.
+One data block contains always the data of one pixel from each channel.
+All the pixel in the block have the same relative position in the 16 columns. 
+The position is given by row and column (called pixel number). 
+The resulting pixel map is is shown below.
+
+\includegraphics[width=0.8\textwidth]{images/pixel_map.png}
+
+The format of the data block header is:
+\begin{verbatim}
+Header = {8'b10000000, pixel_size (4 bits), 
+          1'b0, row_number (11 bits), 1'b0, pixel_number(7 bits)};
+\end{verbatim}
+
+In order to cover all pixel of the CMOSIS sensor CMV2000 the parameter \verb/pixel_number/ has values from 0 to 127 and \verb/row_number/ has value from 0 to 1088.
+
+Example of a single data payload block with 10bit ADC values:
+\begin{verbatim}
+0x80a00000 0x00000000 0x00000000 0x595794d9  
+0xd96c5257 0x6d5655e5 0x97059571 0xf5a96b59
+\end{verbatim}
+
+
+
+
 \section{Software}
 
 The camera software splits in three parts. Interface to the camera hardware, a general camera interface library and specific decoding modules for the supported image sensors.
