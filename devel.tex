@@ -65,6 +65,11 @@ Each frame consist of the HEADER, DATA PAYLOAD and TAIL.
 
 \subsubsection{Header}
 
+% TODO: Parameters for piecewise linear response need to be added to the header
+% 		May be more parameter need to be added, when more fancy algorithms are added
+% 		Is there an extensible standard format that we can follow? EXIF?
+% 		Possible is also a pre-header or image sequences?
+
 HEADER contains 8 word of information:
 
 \begin{verbatim}
@@ -98,11 +103,11 @@ ADC resolution				& Value 	\\
 \hline
 \end{tabular}
 
-The parameter \verb/Output_resolution/ is given in the following table
+The parameter \verb/Output_mode/ is given in the following table
 
 \begin{tabular}{|c|c|}
 \hline
-ADC resolution			& Value 	\\	
+Output mode			& Value 	\\	
 \hline
 16 outputs				& 0 \\
 \hline
